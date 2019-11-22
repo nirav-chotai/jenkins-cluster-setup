@@ -5,3 +5,8 @@
 output "vpc_id" {
   value = "${module.vpc.vpc_id}"
 }
+
+output "asg" {
+  value = "${aws_autoscaling_group.jenkins_asg.name}"
+}
+

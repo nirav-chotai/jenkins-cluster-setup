@@ -3,12 +3,11 @@
 ##################################################################################
 
 variable "vpc_name" {
-  default = "nirav-devops"
+  description = "VPC Name"
 }
 
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
-  default     = "172.20.0.0/16"
 }
 
 variable "enable_dns_hostnames" {
@@ -38,7 +37,4 @@ variable "private_subnet_count" {
 
 variable "tags" {
   type = "map"
-  default = {
-    Owner = "Nirav"
-  }
 }

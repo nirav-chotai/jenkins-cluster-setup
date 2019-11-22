@@ -1,5 +1,8 @@
 #!/bin/bash
 
+S3_BUCKET="expert-nirav-terraform-statebucket-eu-west-1"
+DYNAMO_DB="terraform_statelock"
+
 echo -e "\n====================================="
 echo "-> Installing/verifying Terraform..."
 echo "====================================="
@@ -30,9 +33,6 @@ fi
 AWSCLI_VERSION="$(aws --version)"
 echo "AWS CLI Version -> "$AWSCLI_VERSION
 
-S3_BUCKET="expert-nirav-terraform-statebucket-eu-west-1"
-DYNAMO_DB="terraform_statelock"
-
 echo -e "\n====================================="
 echo "-> S3 Bucket for Remote State"
 echo "====================================="
@@ -55,6 +55,9 @@ else
     echo "Table $DYNAMO_DB created"
 fi
 
+echo -e "\n====================================="
+echo "-> Starting DevOps Setup"
+echo "====================================="
 # Terraform initialization and applying plan to build AWS infrastructure
 # For Intermittent error using s3 state
 # Refer https://github.com/terraform-providers/terraform-provider-aws/issues/4709
