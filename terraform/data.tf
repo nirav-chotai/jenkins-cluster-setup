@@ -30,3 +30,7 @@ data "aws_ami" "demo" {
 data "template_file" "jenkins-app" {
   template = "${file("${path.module}/src/setup-jenkins.tpl")}"
 }
+
+data "template_file" "devops-app" {
+  template = "${file("${path.module}/src/setup-app.tpl")}"
+}

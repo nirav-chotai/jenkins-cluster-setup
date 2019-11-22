@@ -20,20 +20,6 @@ TERRAFORM_VERSION="$(terraform --version)"
 echo "Terraform Version -> "$TERRAFORM_VERSION
 
 echo -e "\n====================================="
-echo "-> Installing/verifying AWS CLI..."
-echo "====================================="
-aws --version 2>&1 >/dev/null
-AWSCLI_IS_INSTALLED=$?
-if [ $AWSCLI_IS_INSTALLED -eq 0 ]; then
-	echo "AWS CLI is installed."
-else
-	echo "AWS CLI is not installed. Installing AWS CLI..."
-	sudo pip install awscli --upgrade --user
-fi
-AWSCLI_VERSION="$(aws --version)"
-echo "AWS CLI Version -> "$AWSCLI_VERSION
-
-echo -e "\n====================================="
 echo "-> S3 Bucket for Remote State"
 echo "====================================="
 if aws s3 ls "s3://$S3_BUCKET" 2>&1 | grep -q 'NoSuchBucket'; then
