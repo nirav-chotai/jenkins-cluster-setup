@@ -35,6 +35,11 @@
       "destination": "/tmp/telegraf.conf"
     },
     {
+      "type" : "file",
+      "source" : "/Users/nirav.chotai/.ssh/jenkins",
+      "destination" : "/tmp/id_rsa"
+    },
+    {
       "type": "shell",
       "script": "./setup.sh",
       "execute_command": "sudo -E -S sh '{{ .Path }}'"

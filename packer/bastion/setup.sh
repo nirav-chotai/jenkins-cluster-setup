@@ -7,3 +7,6 @@ rm /tmp/telegraf.rpm
 chkconfig telegraf on
 mv /tmp/telegraf.conf /etc/telegraf/telegraf.conf
 service telegraf start
+
+echo "Setup SSH key"
+mv /tmp/id_rsa /home/ec2-user/.ssh/id_rsa

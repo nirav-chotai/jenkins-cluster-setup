@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sleep 60
+
 JENKINS_URL="${jenkins_url}"
 JENKINS_USERNAME="${jenkins_username}"
 JENKINS_PASSWORD="${jenkins_password}"
