@@ -2,35 +2,47 @@
 # Data Sources
 ##################################################################################
 
-data "aws_ami" "demo" {
-  most_recent      = true
-  owners           = ["137112412989"]
+data "aws_ami" "bastion" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "tag:Author"
+    values = ["nchotai"]
+  }
 
   filter {
     name   = "name"
-    values = ["amzn-ami-hvm-*"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
-    name = "architecture"
-    values = ["x86_64"]
+    values = ["bastion-*"]
   }
 }
 
-data "template_file" "jenkins-app" {
-  template = "${file("${path.module}/src/setup-jenkins.tpl")}"
+data "aws_ami" "jenkins-master" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "tag:Author"
+    values = ["nchotai"]
+  }
+
+  filter {
+    name   = "name"
+    values = ["jenkins-master-*"]
+  }
 }
 
-data "template_file" "devops-app" {
-  template = "${file("${path.module}/src/setup-app.tpl")}"
+data "aws_ami" "jenkins-slave" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "tag:Author"
+    values = ["nchotai"]
+  }
+
+  filter {
+    name   = "name"
+    values = ["jenkins-slave-*"]
+  }
 }

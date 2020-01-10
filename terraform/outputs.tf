@@ -6,30 +6,30 @@ output "vpc_id" {
   value = "${module.vpc.vpc_id}"
 }
 
-output "jenkins_asg_name" {
-  value = "${aws_autoscaling_group.jenkins_asg.name}"
+output "public_subnets" {
+  value = "${module.vpc.public_subnets}"
 }
 
-output "app_asg_name" {
-  value = "${aws_autoscaling_group.app_asg.name}"
+output "private_subnets" {
+  value = "${module.vpc.private_subnets}"
 }
 
-output "jenkins_lb_name" {
-  value = "${aws_lb.jenkins_lb.name}"
+output "bastion_ami" {
+  value = "${data.aws_ami.bastion.id}"
 }
 
-output "jenkins_lb_arn" {
-  value = "${aws_lb.jenkins_lb.arn}"
+output "bastion_elb" {
+  value = "${aws_elb.bastion_hosts_elb.dns_name}"
 }
 
-output "app_lb_arn" {
-  value = "${aws_lb.app_lb.arn}"
+output "jenkins_master_ami" {
+  value = "${data.aws_ami.jenkins-master.id}"
 }
 
-output "jenkins_lb_fqdn" {
-  value = "${aws_lb.jenkins_lb.dns_name}"
+output "jenkins_slave_ami" {
+  value = "${data.aws_ami.jenkins-slave.id}"
 }
 
-output "app_lb_fqdn" {
-  value = "${aws_lb.app_lb.dns_name}"
+output "jenkins_master_elb" {
+  value = "${aws_elb.jenkins_elb.dns_name}"
 }

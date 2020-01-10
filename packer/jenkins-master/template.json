@@ -1,0 +1,98 @@
+{
+  "variables": {
+    "region": "eu-west-1"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "jenkins-master-2.150.1-{{timestamp}}",
+      "ami_description": "Amazon Linux Image with Jenkins Server",
+      "instance_type": "t2.micro",
+      "region" : "{{user `region`}}",
+      "ssh_username" : "ec2-user",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "amzn-ami-hvm-*-x86_64-gp2",
+          "root-device-type": "ebs"
+        },
+        "owners": "amazon",
+        "most_recent": true
+      },
+      "run_tags" : {
+        "Name" : "packer-builder-docker"
+      },
+      "tags" : {
+        "Tool" : "Packer",
+        "Author" : "nchotai"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./basic-security.groovy",
+      "destination": "/tmp/basic-security.groovy"
+    },
+    {
+      "type": "file",
+      "source": "./jenkins.install.UpgradeWizard.state",
+      "destination": "/tmp/jenkins.install.UpgradeWizard.state"
+    },
+    {
+      "type": "file",
+      "source": "./disable-cli.groovy",
+      "destination": "/tmp/disable-cli.groovy"
+    },
+    {
+      "type": "file",
+      "source": "./csrf-protection.groovy",
+      "destination": "/tmp/csrf-protection.groovy"
+    },
+    {
+      "type": "file",
+      "source": "./disable-jnlp.groovy",
+      "destination": "/tmp/disable-jnlp.groovy"
+    },
+    {
+      "type": "file",
+      "source": "./jenkins",
+      "destination": "/tmp/jenkins"
+    },
+    {
+      "type" : "file",
+      "source" : "/Users/nirav.chotai/.ssh/jenkins",
+      "destination" : "/tmp/id_rsa"
+    },
+    {
+      "type" : "file",
+      "source" : "/Users/nirav.chotai/.ssh/jenkins.pub",
+      "destination" : "/tmp/id_rsa.pub"
+    },
+    {
+      "type": "file",
+      "source": "./node-agent.groovy",
+      "destination": "/tmp/node-agent.groovy"
+    },
+    {
+      "type": "file",
+      "source": "./plugins.txt",
+      "destination": "/tmp/plugins.txt"
+    },
+    {
+      "type": "file",
+      "source": "./install-plugins.sh",
+      "destination": "/tmp/install-plugins.sh"
+    },
+    {
+      "type": "file",
+      "source": "./telegraf.conf",
+      "destination": "/tmp/telegraf.conf"
+    },
+    {
+      "type": "shell",
+      "script" : "./setup.sh",
+      "execute_command" : "sudo -E -S sh '{{ .Path }}'"
+    }
+  ]
+}

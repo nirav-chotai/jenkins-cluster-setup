@@ -1,0 +1,43 @@
+{
+  "variables": {
+    "region": "eu-west-1"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "bastion-{{timestamp}}",
+      "ami_description": "Amazon Linux Image with Telegraf",
+      "instance_type": "t2.micro",
+      "region" : "{{user `region`}}",
+      "ssh_username" : "ec2-user",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "amzn-ami-hvm-*-x86_64-gp2",
+          "root-device-type": "ebs"
+        },
+        "owners": "amazon",
+        "most_recent": true
+      },
+      "run_tags" : {
+        "Name" : "packer-builder-docker"
+      },
+      "tags" : {
+        "Tool" : "Packer",
+        "Author" : "nchotai"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./telegraf.conf",
+      "destination": "/tmp/telegraf.conf"
+    },
+    {
+      "type": "shell",
+      "script": "./setup.sh",
+      "execute_command": "sudo -E -S sh '{{ .Path }}'"
+    }
+  ]
+}
