@@ -14,22 +14,18 @@ output "private_subnets" {
   value = "${module.vpc.private_subnets}"
 }
 
-output "bastion_ami" {
-  value = "${data.aws_ami.bastion.id}"
+output "jenkins_server_ami_name" {
+  value = "${data.aws_ami.jenkins_server.name}"
 }
 
-output "bastion_elb" {
-  value = "${aws_elb.bastion_hosts_elb.dns_name}"
+output "jenkins_server_ami_id" {
+  value = "${data.aws_ami.jenkins_server.id}"
 }
 
-output "jenkins_master_ami" {
-  value = "${data.aws_ami.jenkins-master.id}"
+output "jenkins_server_public_ip" {
+  value = "${aws_instance.jenkins_server.public_ip}"
 }
 
-output "jenkins_slave_ami" {
-  value = "${data.aws_ami.jenkins-slave.id}"
-}
-
-output "jenkins_master_elb" {
-  value = "${aws_elb.jenkins_elb.dns_name}"
+output "jenkins_server_private_ip" {
+  value = "${aws_instance.jenkins_server.private_ip}"
 }

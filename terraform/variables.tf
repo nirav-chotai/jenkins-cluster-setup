@@ -7,6 +7,10 @@ variable "region" {
   description = "The AWS region to create resources in."
 }
 
+variable "env" {
+  default = "dev"
+}
+
 variable "vpc_name" {
   default = "nirav_devops"
 }
@@ -33,7 +37,7 @@ variable "instance_type" {
 
 variable "public_key" {
   description = "SSH public key"
-  default     = "~/.ssh/jenkins.pub"
+  default     = "~/.ssh/myjenkins.pub"
 }
 
 variable "associate_public_ip_address" {
@@ -46,34 +50,8 @@ variable "jenkins_master_instance_type" {
   default     = "t2.large"
 }
 
-variable "jenkins_slave_instance_type" {
-  description = "Jenkins Slave instance type"
-  default     = "t2.micro"
-}
-
-variable "min_jenkins_slaves" {
-  description = "Min slaves"
-  default     = "3"
-}
-
-variable "max_jenkins_slaves" {
-  description = "Max slaves"
-  default     = "5"
-}
-
-variable "jenkins_username" {
-  description = "Jenkins username"
-  default = "admin"
-}
-
-variable "jenkins_password" {
-  description = "Jenkins password"
-  default = "admin"
-}
-
-variable "jenkins_credentials_id" {
-  description = "Slaves SSH ID"
-  default = "jenkins-slaves"
+variable "jenkins_admin_password" {
+  default = "mysupersecretpassword"
 }
 
 variable "tags" {

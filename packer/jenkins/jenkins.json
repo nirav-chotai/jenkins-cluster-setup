@@ -1,0 +1,51 @@
+{
+  "variables": {
+    "region": "eu-west-1",
+    "ami-description": "Amazon Linux for Jenkins Master and Slave ({{isotime \"2006-01-02-15-04-05\"}})",
+    "ami-name": "amazon-linux-for-jenkins-{{isotime \"2006-01-02-15-04-05\"}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "{{user `ami-name`}}",
+      "ami_description": "{{user `ami-description`}}",
+      "instance_type": "t2.micro",
+      "region" : "{{user `region`}}",
+      "ssh_username" : "ec2-user",
+      "source_ami_filter": {
+        "filters": {
+          "name": "amzn2-ami-hvm-2.0*x86_64*",
+          "virtualization-type": "hvm",
+          "root-device-type": "ebs"
+        },
+        "owners": "amazon",
+        "most_recent": true
+      },
+      "sriov_support": "true",
+      "ssh_username": "ec2-user",
+      "run_tags" : {
+        "Name" : "packer-builder-docker"
+      },
+      "tags" : {
+        "Tool" : "Packer",
+        "Author" : "nchotai"
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "inline": [
+        "echo AMI Name {{user `ami-name`}}",
+        "date",
+        "exit 0"
+      ],
+      "type": "shell-local"
+    }
+  ],
+  "provisioners": [
+    {
+      "script": "install_jenkins.bash",
+      "type": "shell"
+    }
+  ]
+}
