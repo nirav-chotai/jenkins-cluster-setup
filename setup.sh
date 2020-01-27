@@ -49,4 +49,5 @@ echo "====================================="
 # Refer https://github.com/terraform-providers/terraform-provider-aws/issues/4709
 cd terraform; \
     terraform init --backend-config="dynamodb_table=$DYNAMO_DB" --backend-config="bucket=$S3_BUCKET"; \
-    terraform apply -auto-approve
+    terraform plan; \
+    terraform apply

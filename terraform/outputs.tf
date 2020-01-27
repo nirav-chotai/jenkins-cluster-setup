@@ -6,30 +6,26 @@ output "vpc_id" {
   value = "${module.vpc.vpc_id}"
 }
 
-output "jenkins_asg_name" {
-  value = "${aws_autoscaling_group.jenkins_asg.name}"
+output "public_subnets" {
+  value = "${module.vpc.public_subnets}"
 }
 
-output "app_asg_name" {
-  value = "${aws_autoscaling_group.app_asg.name}"
+output "private_subnets" {
+  value = "${module.vpc.private_subnets}"
 }
 
-output "jenkins_lb_name" {
-  value = "${aws_lb.jenkins_lb.name}"
+output "jenkins_server_ami_name" {
+  value = "${data.aws_ami.jenkins_server.name}"
 }
 
-output "jenkins_lb_arn" {
-  value = "${aws_lb.jenkins_lb.arn}"
+output "jenkins_server_ami_id" {
+  value = "${data.aws_ami.jenkins_server.id}"
 }
 
-output "app_lb_arn" {
-  value = "${aws_lb.app_lb.arn}"
+output "jenkins_server_public_ip" {
+  value = "${aws_instance.jenkins_server.public_ip}"
 }
 
-output "jenkins_lb_fqdn" {
-  value = "${aws_lb.jenkins_lb.dns_name}"
-}
-
-output "app_lb_fqdn" {
-  value = "${aws_lb.app_lb.dns_name}"
+output "jenkins_server_private_ip" {
+  value = "${aws_instance.jenkins_server.private_ip}"
 }

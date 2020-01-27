@@ -2,18 +2,13 @@
 # VARIABLES
 ##################################################################################
 
-variable "app_name" {
-  description = "Application Name"
-  default = "experts-demo"
-}
-
 variable "region" {
   default     = "eu-west-1"
   description = "The AWS region to create resources in."
 }
 
 variable "vpc_name" {
-  default = "nirav-devops"
+  default = "nirav_devops"
 }
 
 variable "vpc_cidr" {
@@ -28,22 +23,22 @@ variable "public_subnet_count" {
 
 variable "private_subnet_count" {
   description = "Number of private subnets"
-  default     = "1"
+  default     = "2"
 }
 
-variable "ingress_cidr_block" {
-  description = "Allowed connection from the IP or IP range"
-  default = "14.140.133.58/32"
+variable "master_public_key" {
+  description = "SSH public key for master"
+  default     = "~/.ssh/jenkinsMaster_rsa.pub"
 }
 
-variable "ssh_key_name" {
-  description = "The key name that should be used for the instance."
-  default = "experts-demo"
+variable "agent_public_key" {
+  description = "SSH public key for agent"
+  default     = "~/.ssh/jenkinsAgent_rsa.pub"
 }
 
-variable "instance_type" {
-  description = "EC2 Instance Type"
-  default = "m4.large"
+variable "agent_private_key" {
+  description = "SSH private key for agent"
+  default     = "~/.ssh/jenkinsAgent_rsa"
 }
 
 variable "associate_public_ip_address" {
@@ -51,39 +46,18 @@ variable "associate_public_ip_address" {
   default = true
 }
 
-variable "max_size" {
-  description = "The maximum size of the auto scale group."
-  default = "1"
+variable "jenkins_master_instance_type" {
+  description = "Jenkins Master Instance Type"
+  default     = "t2.large"
 }
 
-variable "min_size" {
-  description = "The minimum size of the auto scale group."
-  default = "1"
+variable "jenkins_slave_instance_type" {
+  description = "Jenkins Slave Instance Type"
+  default     = "t2.medium"
 }
 
-variable "desired_capacity" {
-  description = "The number of Amazon EC2 instances that should be running in the group."
-  default = "1"
-}
-
-variable "health_check_grace_period" {
-  description = "Time (in seconds) after instance comes into service before checking health."
-  default = "300"
-}
-
-variable "health_check_type" {
-  description = "EC2 or ELB"
-  default = "EC2"
-}
-
-variable "wait_for_elb_capacity" {
-  description = "Setting this will cause Terraform to wait for exactly this number of healthy instances from this autoscaling group in all attached load balancers on both create and update operations."
-  default = false
-}
-
-variable "force_delete" {
-  description = "Allows deleting the autoscaling group without waiting for all instances in the pool to terminate."
-  default = true
+variable "jenkins_admin_password" {
+  default = "mysupersecretpassword"
 }
 
 variable "tags" {

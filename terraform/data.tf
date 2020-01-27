@@ -2,35 +2,57 @@
 # Data Sources
 ##################################################################################
 
-data "aws_ami" "demo" {
-  most_recent      = true
-  owners           = ["137112412989"]
+data "aws_ami" "jenkins_server" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "tag:Author"
+    values = ["nchotai"]
+  }
 
   filter {
     name   = "name"
-    values = ["amzn-ami-hvm-*"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
-    name = "architecture"
-    values = ["x86_64"]
+    values = ["amazon-linux-for-jenkins*"]
   }
 }
 
-data "template_file" "jenkins-app" {
-  template = "${file("${path.module}/src/setup-jenkins.tpl")}"
+# userdata for the Jenkins server ...
+data "template_file" "jenkins_server" {
+  template = "${file("src/jenkins_server.sh")}"
+
+  vars {
+    jenkins_admin_password  = "${var.jenkins_admin_password}"
+  }
 }
 
-data "template_file" "devops-app" {
-  template = "${file("${path.module}/src/setup-app.tpl")}"
+data "aws_ami" "jenkins_worker_linux" {
+  most_recent = true
+  owners      = ["self"]
+
+  filter {
+    name   = "tag:Author"
+    values = ["nchotai"]
+  }
+
+  filter {
+    name   = "name"
+    values = ["amazon-linux-for-jenkins*"]
+  }
+}
+
+data "tls_public_key" "example" {
+  private_key_pem = "${file("${var.agent_private_key}")}"
+}
+
+data "template_file" "userdata_jenkins_worker_linux" {
+  template = "${file("src/jenkins_worker_linux.sh")}"
+
+  vars {
+    server_ip         = "${aws_instance.jenkins_server.private_ip}"
+    jenkins_username  = "admin"
+    jenkins_password  = "${var.jenkins_admin_password}"
+    device_name       = "eth0"
+    worker_pem        = "${data.tls_public_key.example.private_key_pem}"
+  }
 }
