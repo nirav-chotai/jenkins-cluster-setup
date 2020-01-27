@@ -7,10 +7,6 @@ variable "region" {
   description = "The AWS region to create resources in."
 }
 
-variable "env" {
-  default = "dev"
-}
-
 variable "vpc_name" {
   default = "nirav_devops"
 }
@@ -30,14 +26,19 @@ variable "private_subnet_count" {
   default     = "2"
 }
 
-variable "instance_type" {
-  description = "EC2 Instance Type"
-  default     = "t2.micro"
+variable "master_public_key" {
+  description = "SSH public key for master"
+  default     = "~/.ssh/jenkinsMaster_rsa.pub"
 }
 
-variable "public_key" {
-  description = "SSH public key"
-  default     = "~/.ssh/myjenkins.pub"
+variable "agent_public_key" {
+  description = "SSH public key for agent"
+  default     = "~/.ssh/jenkinsAgent_rsa.pub"
+}
+
+variable "agent_private_key" {
+  description = "SSH private key for agent"
+  default     = "~/.ssh/jenkinsAgent_rsa"
 }
 
 variable "associate_public_ip_address" {
@@ -46,8 +47,13 @@ variable "associate_public_ip_address" {
 }
 
 variable "jenkins_master_instance_type" {
-  description = "Jenkins Master instance type"
+  description = "Jenkins Master Instance Type"
   default     = "t2.large"
+}
+
+variable "jenkins_slave_instance_type" {
+  description = "Jenkins Slave Instance Type"
+  default     = "t2.medium"
 }
 
 variable "jenkins_admin_password" {

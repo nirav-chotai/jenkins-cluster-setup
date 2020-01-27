@@ -38,7 +38,7 @@ module "vpc" {
 
 resource "aws_key_pair" "jenkins_server" {
   key_name   = "jenkins_server"
-  public_key = "${file("${var.public_key}")}"
+  public_key = "${file("${var.master_public_key}")}"
 }
 
 resource "aws_instance" "jenkins_server" {
@@ -64,3 +64,54 @@ resource "aws_instance" "jenkins_server" {
 # Jenkins Slave Setup
 ##################################################################################
 
+resource "aws_key_pair" "jenkins_worker_linux" {
+  key_name   = "jenkins_worker_linux"
+  public_key = "${file("${var.agent_public_key}")}"
+}
+
+resource "aws_launch_configuration" "jenkins_worker_linux" {
+  name_prefix                 = "dev-jenkins-worker-linux"
+  image_id                    = "${data.aws_ami.jenkins_worker_linux.image_id}"
+  instance_type               = "t3.medium"
+  iam_instance_profile        = "${aws_iam_instance_profile.dev_jenkins_worker_linux.name}"
+  key_name                    = "${aws_key_pair.jenkins_worker_linux.key_name}"
+  security_groups             = ["${aws_security_group.dev_jenkins_worker_linux.id}"]
+  user_data                   = "${data.template_file.userdata_jenkins_worker_linux.rendered}"
+  associate_public_ip_address = false
+
+  root_block_device {
+    delete_on_termination = true
+    volume_size = 100
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "jenkins_worker_linux" {
+  name                      = "dev-jenkins-worker-linux"
+  min_size                  = "1"
+  max_size                  = "2"
+  desired_capacity          = "2"
+  health_check_grace_period = 60
+  health_check_type         = "EC2"
+  vpc_zone_identifier       = ["${module.vpc.public_subnets}"]
+  launch_configuration      = "${aws_launch_configuration.jenkins_worker_linux.name}"
+  termination_policies      = ["OldestLaunchConfiguration"]
+  wait_for_capacity_timeout = "10m"
+  default_cooldown          = 60
+
+  tags = [
+    {
+      key                 = "Name"
+      value               = "dev_jenkins_worker_linux"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "class"
+      value               = "dev_jenkins_worker_linux"
+      propagate_at_launch = true
+    },
+  ]
+}
