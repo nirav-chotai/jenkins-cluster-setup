@@ -6,7 +6,7 @@ Using Packer and Terraform to Setup Jenkins Master-Slave Architecture
 - Jenkins Master/Slave AMI Creation with Packer
 - Jenkins Master EC2 Instance Creation (SG, IAM and others)
 - Jenkins Slave AutoScaling Group (SG, IAM and others)
-- Attach Jenkins Node to Master
+- Attach Jenkins Node to Master and Install most of the required plugins
 
 # Architecture
 
@@ -49,4 +49,6 @@ eu-west-1: ami-0fc1d54f3e6867f97
 
 # Outcome
 
-![JenkinsCluster](readme_images/jenkins-cluster.png)
+![JenkinsNodes](readme_images/jenkins-nodes.png)
+
+![JenkinsCredentials](readme_images/jenkins-credentials.png)
